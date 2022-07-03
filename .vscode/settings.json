@@ -1,0 +1,49 @@
+{
+  "editor.tabSize": 2,
+  "editor.rulers": [
+    80
+  ],
+  // https://code.visualstudio.com/docs/editor/codebasics#_formatting
+  // https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers
+  // "editor.formatOnSave": true,
+  // "editor.formatOnPaste": true,
+  // "editor.formatOnType": false,
+  "[c]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": false,
+  },
+  "[cpp]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": false,
+  },
+  // "cmake.loggingLevel": "debug", // CMakeTools
+  "cmake.buildDirectory": "${workspaceRoot}/build/${buildType}",
+  "cmake.configureOnOpen": true,
+  "cmake.configureSettings": {
+    // "CMAKE_TOOLCHAIN_FILE": "${workspaceRoot}/third-party/scripts/buildsystems/vcpkg.cmake",
+    // "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+    // "VCPKG_CRT_LINKAGE": "static",
+    // "VCPKG_LIBRARY_LINKAGE": "static",
+    "ESE_OFFLINE_LICENSE_TEST": "ON"
+  },
+  "cmake.configureArgs": [
+    // https://github.com/microsoft/vscode-cmake-tools/issues/892
+    // "--log-level=DEBUG" // Enable to get more info from CMake.
+  ],
+  "testExplorer.sort": "byLabelWithSuitesFirst",
+  "testMate.cpp.test.advancedExecutables": [
+    {
+      "name": "${filename}",
+      "description": "${relDirpath}/",
+      "pattern": "build/**/*{test,Test,TEST}*"
+    }
+  ],
+  "search.exclude": {
+    "third_party/**": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {},
+  "cSpell.words": [],
+}

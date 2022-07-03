@@ -1,0 +1,101 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Documentation",
+      "type": "shell",
+      "command": "doxygen",
+      "args": ["Doxyfile"],
+      "group": "build",
+      "problemMatcher": [
+        {
+          // Doxyfile: General warnings.
+          "fileLocation": ["relative", "${workspaceFolder}"],
+          "pattern": [
+            {
+              "regexp": "^(warning):\\s+(.+)\\s+at line\\s+(\\d+), file\\s+(.+)$",
+              "severity": 1,
+              "message": 2,
+              "line": 3,
+              "file": 4
+            }
+          ]
+        },
+        {
+          // Doxyfile: Obsolete tag warnings.
+          "fileLocation": ["relative", "${workspaceFolder}"],
+          "pattern": [
+            {
+              "regexp": "^(warning):\\s+(Tag '.+' at line (\\d+) of file '(.+)' .+)$",
+              "severity": 1,
+              "message": 2,
+              "line": 3,
+              "file": 4
+            }
+          ]
+        },
+        {
+          // Documentation: Warnings/Errors.
+          "fileLocation": ["absolute"],
+          "pattern": [
+            {
+              "regexp": "^(.+):(\\d+): (warning|error): (.+)$",
+              "file": 1,
+              "line": 2,
+              "severity": 3,
+              "message": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Run All Fuzzers",
+      "type": "shell",
+      "command": "ctest -L Fuzz",
+      "args": [],
+      "group": "test",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Run Fuzzer",
+      "type": "shell",
+      "command": "${workspaceFolder}/build/${input:buildConfig}/fuzzers/${input:fuzzer}",
+      "args": [
+        "-max_total_time=${input:fuzzerMaxTime}",
+        "-print_final_stats=1",
+        "${workspaceFolder}/fuzzers/corpus/${input:fuzzer}/"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always"
+      },
+      "runOptions": { "reevaluateOnRerun": false }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "buildConfig",
+      "type": "pickString",
+      "description": "Choose build configuration",
+      "options": ["Debug", "Release"],
+      "default": "Release"
+    },
+    {
+      "id": "fuzzer",
+      "type": "pickString",
+      "description": "Choose fuzzer",
+      "options": ["fuzz_parse_license"]
+    },
+    {
+      "id": "fuzzerMaxTime",
+      "type": "promptString",
+      "description": "Max total time (seconds)",
+      "default": "10"
+    }
+  ]
+}

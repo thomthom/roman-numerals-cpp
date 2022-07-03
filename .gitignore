@@ -1,0 +1,25 @@
+# Windows System Files
+Thumbs.db
+
+# macOS System Files
+.DS_Store
+
+# Log Files.
+*.log
+
+# Temp Files
+/temp/
+/CI-Build/
+
+# Visual Studio
+.vs/
+out/
+
+# libFuzzer crash reports
+crash-*
+
+# Coverage Files
+/coverage/
+
+# CMake
+/build
