@@ -40,15 +40,15 @@ int main(int argc, char* argv[])
   std::cout << "Roman Numeral Tests\n\n";
 
   {
-    RomanNumeral numeral(1984);
+    RomanNumeral numeral(1983);
     ASSERT_EQ("MCMLXXXIII", numeral.roman());
-    ASSERT_EQ(1984, numeral.decimal());
+    ASSERT_EQ(1983, numeral.decimal());
   }
 
   {
     RomanNumeral numeral("MCMLXXXIII");
     ASSERT_EQ("MCMLXXXIII", numeral.roman());
-    ASSERT_EQ(1984, numeral.decimal());
+    ASSERT_EQ(1983, numeral.decimal());
   }
 
   std::cout << "\n\n";

@@ -1,7 +1,9 @@
 set(HEADERS_LIB
+  generate.h
   roman.h
 )
 set(SOURCES_LIB
+  generate.cpp
   roman.cpp
 )
 add_library(roman_static STATIC ${HEADERS_LIB} ${SOURCES_LIB})

@@ -1,5 +1,7 @@
 #include "roman.h"
 
+#include "generate.h"
+
 namespace {
 
 int parse(const std::string& roman)
@@ -9,7 +11,7 @@ int parse(const std::string& roman)
 
 std::string generate(int decimal)
 {
-  return ""; // TODO:
+  return roman::generate(decimal);
 }
 
 } // namespace
