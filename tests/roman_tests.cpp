@@ -2,6 +2,7 @@
 
 #include <format>
 #include <iostream>
+#include <source_location>
 #include <string>
 #include <vector>
 
@@ -10,7 +11,9 @@ namespace {
 std::vector<std::string> g_failures;
 
 template<typename T, typename U>
-void ASSERT_EQ(T expected, U actual)
+void ASSERT_EQ(
+    T expected, U actual,
+    const std::source_location location = std::source_location::current())
 {
   if (expected == actual)
   {
@@ -20,8 +23,12 @@ void ASSERT_EQ(T expected, U actual)
   {
     std::cout << "F";
 
+    std::string source =
+        std::format("function {} : {}:{}:{}", location.function_name(),
+                    location.file_name(), location.line(), location.column());
+
     std::string message =
-        std::format("Expected {} to equal {}.", actual, expected);
+        std::format("Expected {} to equal {} in {}.", actual, expected, source);
     g_failures.push_back(message);
   }
 }
@@ -30,7 +37,7 @@ void ASSERT_EQ(T expected, U actual)
 
 int main(int argc, char* argv[])
 {
-  std::cout << "Roman Numeral Tests\n";
+  std::cout << "Roman Numeral Tests\n\n";
 
   {
     RomanNumeral numeral(1984);
@@ -44,7 +51,7 @@ int main(int argc, char* argv[])
     ASSERT_EQ(1984, numeral.decimal());
   }
 
-  std::cout << "\n";
+  std::cout << "\n\n";
   for (const auto& failure : g_failures)
   {
     std::cout << failure << "\n";
