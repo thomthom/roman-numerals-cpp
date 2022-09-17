@@ -13,13 +13,21 @@ namespace {
 class TestSuite;
 TestSuite* g_test_suite_;
 
+constexpr const char* COLOR_RED = "\x1B[31m";
+constexpr const char* COLOR_GREEN = "\x1B[32m";
+constexpr const char* COLOR_YELLOW = "\x1B[33m";
+constexpr const char* COLOR_BLUE = "\x1B[34m";
+constexpr const char* COLOR_MAGENTA = "\x1B[35m";
+constexpr const char* COLOR_CYAN = "\x1B[36m";
+constexpr const char* COLOR_RESET = "\033[0m";
+
 class TestSuite {
  public:
   TestSuite(const std::string& name) : name_(name) {
     assert(g_test_suite_ == nullptr);
     g_test_suite_ = this;
 
-    std::cout << name << "\n\n";
+    std::cout << COLOR_CYAN << name << COLOR_RESET << "\n\n";
   }
   ~TestSuite() {
     std::cout << "\n\n";
@@ -61,18 +69,18 @@ void ASSERT_EQ(
 {
   if (expected == actual)
   {
-    std::cout << ".";
+    std::cout << COLOR_GREEN << "." << COLOR_RESET;
   }
   else
   {
-    std::cout << "F";
+    std::cout << COLOR_RED << "F" << COLOR_RESET;
 
     std::string source =
         std::format("function {} : {}:{}:{}", location.function_name(),
                     location.file_name(), location.line(), location.column());
 
     std::string message =
-        std::format("Expected {} to equal {} in {}.", actual, expected, source);
+        std::format("Expected \x1B[33m{}\033[0m to equal \x1B[33m{}\033[0m in {}.", actual, expected, source);
     g_test_suite_->record(message);
   }
 }
