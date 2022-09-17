@@ -1,6 +1,7 @@
 #include "roman.h"
 #include "roman_literals.h"
 
+#include <cassert>
 #include <format>
 #include <iostream>
 #include <source_location>
@@ -8,6 +9,48 @@
 #include <vector>
 
 namespace {
+
+class TestSuite;
+TestSuite* g_test_suite_;
+
+class TestSuite {
+ public:
+  TestSuite(const std::string& name) : name_(name) {
+    assert(g_test_suite_ == nullptr);
+    g_test_suite_ = this;
+
+    std::cout << name << "\n\n";
+  }
+  ~TestSuite() {
+    std::cout << "\n\n";
+    for (const auto& failure : failures_)
+    {
+      std::cout << failure << "\n";
+    }
+
+    g_test_suite_ = nullptr;
+  }
+
+  const std::string& name() const {
+    return name_;
+  }
+
+  void record(const std::string& failure) {
+    failures_.push_back(failure);
+  }
+
+  bool failed() const {
+    return !failures_.empty();
+  }
+
+  const std::vector<std::string>& failures() const {
+    return failures_;
+  }
+
+ private:
+  std::string name_;
+  std::vector<std::string> failures_;
+};
 
 std::vector<std::string> g_failures;
 
@@ -30,7 +73,7 @@ void ASSERT_EQ(
 
     std::string message =
         std::format("Expected {} to equal {} in {}.", actual, expected, source);
-    g_failures.push_back(message);
+    g_test_suite_->record(message);
   }
 }
 
@@ -38,8 +81,7 @@ void ASSERT_EQ(
 
 int main(int argc, char* argv[])
 {
-  std::cout << "Roman Numeral Tests\n\n";
-
+  TestSuite test_suite("Roman Numeral Tests");
   {
     const RomanNumeral numeral(1983);
     ASSERT_EQ("MCMLXXXIII", numeral.roman());
@@ -64,9 +106,5 @@ int main(int argc, char* argv[])
     ASSERT_EQ(1983, numeral.decimal());
   }
 
-  std::cout << "\n\n";
-  for (const auto& failure : g_failures)
-  {
-    std::cout << failure << "\n";
-  }
+  return test_suite.failed() ? 1 : 0;
 }

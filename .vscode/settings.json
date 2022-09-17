@@ -45,6 +45,9 @@
   },
   "files.trimTrailingWhitespace": true,
   "files.associations": {
+    "*.thor": "ruby",
+    "*.erb": "erb",
+    "*.tt": "erb",
     "atomic": "cpp",
     "bit": "cpp",
     "cctype": "cpp",
@@ -105,7 +108,11 @@
     "list": "cpp",
     "unordered_map": "cpp",
     "xhash": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "mutex": "cpp",
+    "ratio": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp"
   },
   "cSpell.words": [],
 }
