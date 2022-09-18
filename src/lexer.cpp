@@ -45,7 +45,7 @@ class LexError : public std::domain_error {
     LexError(const char* message) : std::domain_error(message) {};
 };
 
-}
+} // namespace
 
 std::vector<Token> lex(const std::string& input) {
   if (input.empty())
@@ -55,13 +55,11 @@ std::vector<Token> lex(const std::string& input) {
   bool mega = false;
   std::string_view input_view = input;
   for (size_t i = 0; i < input.size(); ++i) {
-    // const std::string chr = &input[i];
     const auto chr = input_view.substr(i, 1);
 
     // Account for ASCII modifier to the numerals.
     if (mega && MODIFIABLE_NUMERALS.find(chr) == std::string::npos) {
-      // raise ArgumentError, "unexpected char after MEGA_MODIFIER_PREFIX: #{c}"
-      throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{c}");
+      throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{c}"); // TODO: Format
     }
 
     if (chr == MEGA_MODIFIER_PREFIX) {
@@ -71,36 +69,29 @@ std::vector<Token> lex(const std::string& input) {
 
     // Account for possible Combining Overline diacritics.
     // https://en.wikipedia.org/wiki/Combining_character
-    // if (chr == MEGA_MODIFIER_POSTFIX)
     if (input_view.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX) {
       ++i; // Because MEGA_MODIFIER_POSTFIX is byte size 2.
       continue;
     }
 
     std::string buffer(chr);
-    // std::string_view buffer = chr;
 
     // Look ahead to see if there's an overline, indicating multiplication by 1000.
-    const auto peek = input_view.substr(i + 1, MEGA_MODIFIER_POSTFIX.size()); // TODO: Bounds!
-    // if (input[i + 1] == MEGA_MODIFIER_POSTFIX) {
+    const auto peek = input_view.substr(i + 1, MEGA_MODIFIER_POSTFIX.size());
     if (peek == MEGA_MODIFIER_POSTFIX) {
-      // buffer = input[i, 2];
       buffer = input_view.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
       if (mega)
-        // raise ArgumentError, "unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"
-        throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{chr}");
+        throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"); // TODO: Format
     }
 
     // Convert the ASCII notation to Unicode notation.
     if (mega)
-      // buffer = "#{chr}#{MEGA_MODIFIER_POSTFIX}";
       buffer = std::string(chr) + MEGA_MODIFIER_POSTFIX;
 
     const auto it = ROMAN_TOKENS.find(buffer);
-    // raise ArgumentError, "invalid numeral: #{buffer}" if token.nil?
     if (it == ROMAN_TOKENS.end())
-      throw LexError("invalid numeral: #{buffer}");
+      throw LexError("invalid numeral: #{buffer}"); // TODO: Format
 
     // Reset the MEGA state now that we have the full char.
     mega = false;
