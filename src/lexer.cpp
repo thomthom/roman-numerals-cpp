@@ -71,18 +71,21 @@ std::vector<Token> lex(const std::string& input) {
 
     // Account for possible Combining Overline diacritics.
     // https://en.wikipedia.org/wiki/Combining_character
-    if (chr == MEGA_MODIFIER_POSTFIX)
+    // if (chr == MEGA_MODIFIER_POSTFIX)
+    if (input_view.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX) {
+      ++i; // Because MEGA_MODIFIER_POSTFIX is byte size 2.
       continue;
+    }
 
     std::string buffer(chr);
     // std::string_view buffer = chr;
 
     // Look ahead to see if there's an overline, indicating multiplication by 1000.
-    const auto peek = input_view.substr(i + 1, 1); // TODO: Bounds!
+    const auto peek = input_view.substr(i + 1, MEGA_MODIFIER_POSTFIX.size()); // TODO: Bounds!
     // if (input[i + 1] == MEGA_MODIFIER_POSTFIX) {
     if (peek == MEGA_MODIFIER_POSTFIX) {
       // buffer = input[i, 2];
-      buffer = input_view.substr(i, 2);
+      buffer = input_view.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
       if (mega)
         // raise ArgumentError, "unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"

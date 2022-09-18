@@ -43,14 +43,14 @@ int main(int argc, char* argv[])
     ASSERT_EQ(1983, numeral.decimal());
   }
 
-  // {
-  //   ASSERT_ROUNDTRIP("I̅V̅DVI", 4'506);
-  //   ASSERT_EQ("MV̅DVI"_roman.decimal(), 4'506); // Alternative
-  //   ASSERT_ROUNDTRIP("L̅X̅MMMCCCXXXIX", 63'339);
-  //   ASSERT_ROUNDTRIP("C̅C̅X̅C̅I̅X̅DLV", 299'555);
-  //   ASSERT_EQ("C̅C̅X̅C̅MX̅DLV"_roman.decimal(), 299'555); // Alternative
-  //   ASSERT_ROUNDTRIP("M̅M̅D̅C̅L̅X̅V̅II", 2'665'002);
-  // }
+  {
+    ASSERT_ROUNDTRIP("I̅V̅DVI", 4'506);
+    ASSERT_EQ("MV̅DVI"_roman.decimal(), 4'506); // Alternative
+    ASSERT_ROUNDTRIP("L̅X̅MMMCCCXXXIX", 63'339);
+    ASSERT_ROUNDTRIP("C̅C̅X̅C̅I̅X̅DLV", 299'555);
+    ASSERT_EQ("C̅C̅X̅C̅MX̅DLV"_roman.decimal(), 299'555); // Alternative
+    ASSERT_ROUNDTRIP("M̅M̅D̅C̅L̅X̅V̅II", 2'665'002);
+  }
 
   {
     ASSERT_EQ("_I_VDVI"_roman.decimal(), 4'506);
