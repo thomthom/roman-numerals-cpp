@@ -20,12 +20,15 @@ if(MASTER_PROJECT)
   set(CMAKE_CXX_EXTENSIONS OFF)
   # Set CMAKE_CXX_EXTENSIONS to OFF so we get -std=c++11 instead of gnu++11.
 endif()
+message(STATUS "CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
 
 project(RomanNumerals
   VERSION 1.0.0
   DESCRIPTION "Roman Numeral type for C++"
   LANGUAGES C CXX
 )
+
+message(STATUS "CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
 
 # Enable MSVC multiple processes compilation. (Visual Solution/MSBuild)
 # https://blog.kitware.com/cmake-building-with-all-your-cores/

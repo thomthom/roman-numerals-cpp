@@ -1,12 +1,15 @@
 #include "roman.h"
 
 #include "generate.h"
+#include "lexer.h"
+#include "parser.h"
 
 namespace {
 
-int parse(const std::string& roman)
+int parse(const std::string& numeral)
 {
-  return 0; // TODO:
+  const auto tokens = roman::lex(numeral);
+  return roman::parse(tokens);
 }
 
 std::string generate(int decimal)

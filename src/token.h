@@ -4,6 +4,9 @@
 
 namespace roman {
 
-std::string generate(int decimal);
+struct Token {
+  std::string name;
+  int value;
+};
 
 } // namespace roman
