@@ -43,11 +43,11 @@ void ASSERT_EQ(
 {
   if (expected == actual)
   {
-    std::cout << COLOR_GREEN << "." << COLOR_RESET;
+    std::cout << COLOR_GREEN << "." << COLOR_RESET << std::flush;
   }
   else
   {
-    std::cout << COLOR_RED << "F" << COLOR_RESET;
+    std::cout << COLOR_RED << "F" << COLOR_RESET << std::flush;
 
     std::string source =
         std::format("function {} : {}:{}:{}", location.function_name(),
