@@ -16,3 +16,7 @@ target_link_libraries(roman_tests
   PRIVATE
     roman_static
 )
+
+if(CMAKE_CXX_COMPILER_ID EQUAL "MSVC")
+  target_compile_options(roman_tests PRIVATE "/utf-8>")
+endif()
