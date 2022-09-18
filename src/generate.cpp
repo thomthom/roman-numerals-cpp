@@ -10,18 +10,28 @@ namespace {
 
 struct NumeralSet
 {
-  char next;
-  char half;
-  char curr;
-  char subtract;
+  std::string next;
+  std::string half;
+  std::string curr;
+  std::string subtract;
 };
 
 std::map<int, NumeralSet> g_numeral_sets{
-    {4, {0, 0, 'M'}},
-    {3, {'M', 'D', 'C'}},
-    {2, {'C', 'L', 'X'}},
-    {1, {'X', 'V', 'I'}},
+    {7, {"", "", "M̅"}},
+    {6, {"M̅", "D̅", "C̅"}},
+    {5, {"C̅", "L̅", "X̅"}},
+    {4, {"X̅", "V̅", "M", "I̅"}},
+    {3, {"M", "D", "C"}},
+    {2, {"C", "L", "X"}},
+    {1, {"X", "V", "I"}},
 };
+
+std::string repeat(const std::string& str, int n) {
+  std::ostringstream os;
+  for(int i = 0; i < n; ++i)
+    os << str;
+  return os.str();
+}
 
 void collect_digits(std::vector<int>& digits, int num)
 {
@@ -53,12 +63,12 @@ std::string digit_to_roman(size_t position, int digit)
   case 2: // 2 => CC
   case 3: // 3 => CCC
   {
-    return std::string(digit, numeral.curr);
+    return repeat(numeral.curr, digit);
   }
 
   case 4: // 4 => CD
   {
-    auto curr = numeral.subtract > 0 ? numeral.subtract : numeral.curr;
+    auto curr = (!numeral.subtract.empty()) ? numeral.subtract : numeral.curr;
     return std::format("{}{}", curr, numeral.half);
   }
 
@@ -72,14 +82,13 @@ std::string digit_to_roman(size_t position, int digit)
   case 8: // 8 => DCCC
   {
     auto count = digit - 5;
-    auto buffer = std::string(count + 1, numeral.curr);
-    buffer[0] = numeral.half;
+    auto buffer = numeral.half + repeat(numeral.curr, count);
     return buffer;
   }
 
   case 9: // 9 => CM
   {
-    auto curr = numeral.subtract > 0 ? numeral.subtract : numeral.curr;
+    auto curr = (!numeral.subtract.empty()) ? numeral.subtract : numeral.curr;
     return std::format("{}{}", curr, numeral.next);
   }
 
