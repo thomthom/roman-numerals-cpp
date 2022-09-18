@@ -15,8 +15,12 @@ set(SOURCES_LIB
 )
 add_library(roman_static STATIC ${HEADERS_LIB} ${SOURCES_LIB})
 target_include_directories(roman_static PUBLIC "${CMAKE_CURRENT_LIST_DIR}")
-set_target_properties(roman_static PROPERTIES CXX_STANDARD 20)
-# target_compile_features(roman_static PUBLIC cxx_std_20)
+
+if(CMAKE_CXX_COMPILER_ID EQUAL "MSVC")
+  target_compile_options(roman_static PRIVATE "/utf-8>")
+endif()
+# target_compile_options(roman_static PRIVATE "$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+# target_compile_options(roman_static PRIVATE "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 set(HEADERS
 )
