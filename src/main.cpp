@@ -19,24 +19,36 @@ int main(int argc, char* argv[])
   SetConsoleCP(CP_UTF8);
 #endif
 
-  std::cout << "Decimal to Roman Numerals\n";
+  std::cout << "Decimal <=> Roman Numerals\n";
 
   if (argc <= 1)
   {
-    std::cout << "Usage: roman DECIMAL...\n";
+    std::cout << "Usage: roman INPUT...\n";
     std::cout << "Examples:\n";
     std::cout << "  roman 1983\n";
-    std::cout << "  roman 1983 123\n";
+    std::cout << "  roman XXVI\n";
+    std::cout << "  roman 1983 XXVI\n";
     return 0;
   }
 
   for (int i = 1; i < argc; ++i)
   {
+    std::cout << std::setw(2) << i << ". " << std::setw(8);
+
     const auto input = argv[i];
-    const auto decimal = std::stoi(input);
-    const auto numeral = RomanNumeral(decimal);
-    std::cout << std::setw(2) << i << ". " << std::setw(6) << decimal << " => " << numeral.roman()
-              << "\n";
+    try
+    {
+      // Decimal to roman numeral.
+      const auto decimal = std::stoi(input);
+      const auto numeral = RomanNumeral(decimal);
+      std::cout << decimal << " => " << numeral.roman() << "\n";
+    }
+    catch (const std::invalid_argument&)
+    {
+      // Roman numeral to decimal.
+      const auto numeral = RomanNumeral(input);
+      std::cout << input << " => " << numeral.decimal() << "\n";
+    }
   }
   return 0;
 }
