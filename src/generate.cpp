@@ -51,12 +51,10 @@ std::vector<int> digits(int decimal)
 
 std::string digit_to_roman(size_t position, int digit)
 {
-  // TODO: range check `digit`
   auto numeral = g_numeral_sets.at(position);
 
-  // https: // en.wikipedia.org/wiki/Roman_numerals//Standard_form
+  // https://en.wikipedia.org/wiki/Roman_numerals//Standard_form
 
-  // Examples in position 3 (centi)
   switch (digit)
   {
   case 1: // 1 => C
@@ -92,8 +90,13 @@ std::string digit_to_roman(size_t position, int digit)
     return std::format("{}{}", curr, numeral.next);
   }
 
-  default: // 0 => ''
+  case 0: // 0 => ''
+  {
     return "";
+  }
+
+  default:
+    throw std::runtime_error(std::format("invalid digit value: {}", digit));
   }
 }
 
@@ -101,7 +104,7 @@ std::string digit_to_roman(size_t position, int digit)
 
 std::string generate(int decimal)
 {
-  // TODO: range check.
+  // TODO: Range check. (What is the range?)
 
   if (decimal == 0)
   {
