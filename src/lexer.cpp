@@ -56,21 +56,21 @@ std::vector<Token> lex(const std::string& input)
     return {};
 
   std::vector<Token> tokens;
-  bool mega = false;
+  bool ascii_mega_modifier = false;
   std::string_view input_view = input;
   for (size_t i = 0; i < input.size(); ++i)
   {
     const auto chr = input_view.substr(i, 1);
 
     // Account for ASCII modifier to the numerals.
-    if (mega && MODIFIABLE_NUMERALS.find(chr) == std::string::npos)
+    if (ascii_mega_modifier && MODIFIABLE_NUMERALS.find(chr) == std::string::npos)
     {
       throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{c}"); // TODO: Format
     }
 
     if (chr == MEGA_MODIFIER_PREFIX)
     {
-      mega = true;
+      ascii_mega_modifier = true;
       continue;
     }
 
@@ -90,12 +90,12 @@ std::vector<Token> lex(const std::string& input)
     {
       buffer = input_view.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
-      if (mega)
+      if (ascii_mega_modifier)
         throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"); // TODO: Format
     }
 
     // Convert the ASCII notation to Unicode notation.
-    if (mega)
+    if (ascii_mega_modifier)
       buffer = std::string(chr) + MEGA_MODIFIER_POSTFIX;
 
     const auto it = ROMAN_TOKENS.find(buffer);
@@ -103,7 +103,7 @@ std::vector<Token> lex(const std::string& input)
       throw LexError("invalid numeral: #{buffer}"); // TODO: Format
 
     // Reset the MEGA state now that we have the full char.
-    mega = false;
+    ascii_mega_modifier = false;
 
     const auto token = it->second;
     tokens.push_back(token);
