@@ -24,7 +24,8 @@ BraceWrapping:
   BeforeLambdaBody: false
   BeforeWhile: true
   SplitEmptyFunction: false
-# ColumnLimit: 100
+ColumnLimit: 100
+Cpp11BracedListStyle: false
 IncludeBlocks: Preserve
 IndentCaseLabels: false
 IndentExternBlock: NoIndent

@@ -21,8 +21,7 @@ std::string generate(int decimal)
 
 RomanNumeral::RomanNumeral() : decimal_(0) {}
 RomanNumeral::RomanNumeral(int decimal) : decimal_(decimal) {}
-RomanNumeral::RomanNumeral(const std::string& numeral)
-    : decimal_(parse(numeral)), roman_(numeral)
+RomanNumeral::RomanNumeral(const std::string& numeral) : decimal_(parse(numeral)), roman_(numeral)
 {}
 
 std::string RomanNumeral::roman() const

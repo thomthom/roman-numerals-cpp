@@ -1,7 +1,8 @@
 {
   "editor.tabSize": 2,
   "editor.rulers": [
-    80
+    80,
+    100
   ],
   // https://code.visualstudio.com/docs/editor/codebasics#_formatting
   // https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers

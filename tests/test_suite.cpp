@@ -10,17 +10,20 @@
 namespace roman {
 
 TestSuite* g_test_suite_;
-TestSuite* CurrentTestSuite() {
+TestSuite* CurrentTestSuite()
+{
   return g_test_suite_;
 };
 
-TestSuite::TestSuite(const std::string& name) : name_(name) {
+TestSuite::TestSuite(const std::string& name) : name_(name)
+{
   assert(g_test_suite_ == nullptr);
   g_test_suite_ = this;
 
   std::cout << COLOR_CYAN << name << COLOR_RESET << "\n\n";
 }
-TestSuite::~TestSuite() {
+TestSuite::~TestSuite()
+{
   std::cout << "\n\n";
   for (const auto& failure : failures_)
   {
@@ -30,20 +33,24 @@ TestSuite::~TestSuite() {
   g_test_suite_ = nullptr;
 }
 
-const std::string& TestSuite::name() const {
+const std::string& TestSuite::name() const
+{
   return name_;
 }
 
-void TestSuite::record(const std::string& failure) {
+void TestSuite::record(const std::string& failure)
+{
   failures_.push_back(failure);
 }
 
-bool TestSuite::failed() const {
+bool TestSuite::failed() const
+{
   return !failures_.empty();
 }
 
-const std::vector<std::string>& TestSuite::failures() const {
+const std::vector<std::string>& TestSuite::failures() const
+{
   return failures_;
 }
 
-} // roman namespace
+} // namespace roman

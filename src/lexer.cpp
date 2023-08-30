@@ -7,6 +7,7 @@
 namespace roman {
 namespace {
 
+// clang-format off
 // A map of the Roman numerals and their decimal values.
 const std::map<std::string, Token> ROMAN_TOKENS = {
   { "M̅", Token("M̅", 1'000'000) },
@@ -25,6 +26,7 @@ const std::map<std::string, Token> ROMAN_TOKENS = {
   { "I", Token("I", 1) },
   { "N", Token("N", 0) },
 };
+// clang-format on
 
 // Prefix `_` before a numeral to multiply it by `1000`.
 // This is an ASCII alternative to the unicode notation.
@@ -40,36 +42,42 @@ const std::string MEGA_MODIFIER_POSTFIX = "\xcc\x85";
 // List of numerals that can be modified by the thousand modifiers.
 const std::string MODIFIABLE_NUMERALS = "MDCLXVI";
 
-class LexError : public std::domain_error {
-  public:
-    LexError(const char* message) : std::domain_error(message) {};
+class LexError : public std::domain_error
+{
+public:
+  LexError(const char* message) : std::domain_error(message){};
 };
 
 } // namespace
 
-std::vector<Token> lex(const std::string& input) {
+std::vector<Token> lex(const std::string& input)
+{
   if (input.empty())
     return {};
 
   std::vector<Token> tokens;
   bool mega = false;
   std::string_view input_view = input;
-  for (size_t i = 0; i < input.size(); ++i) {
+  for (size_t i = 0; i < input.size(); ++i)
+  {
     const auto chr = input_view.substr(i, 1);
 
     // Account for ASCII modifier to the numerals.
-    if (mega && MODIFIABLE_NUMERALS.find(chr) == std::string::npos) {
+    if (mega && MODIFIABLE_NUMERALS.find(chr) == std::string::npos)
+    {
       throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{c}"); // TODO: Format
     }
 
-    if (chr == MEGA_MODIFIER_PREFIX) {
+    if (chr == MEGA_MODIFIER_PREFIX)
+    {
       mega = true;
       continue;
     }
 
     // Account for possible Combining Overline diacritics.
     // https://en.wikipedia.org/wiki/Combining_character
-    if (input_view.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX) {
+    if (input_view.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX)
+    {
       ++i; // Because MEGA_MODIFIER_POSTFIX is byte size 2.
       continue;
     }
@@ -78,7 +86,8 @@ std::vector<Token> lex(const std::string& input) {
 
     // Look ahead to see if there's an overline, indicating multiplication by 1000.
     const auto peek = input_view.substr(i + 1, MEGA_MODIFIER_POSTFIX.size());
-    if (peek == MEGA_MODIFIER_POSTFIX) {
+    if (peek == MEGA_MODIFIER_POSTFIX)
+    {
       buffer = input_view.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
       if (mega)
@@ -102,4 +111,4 @@ std::vector<Token> lex(const std::string& input) {
   return tokens;
 }
 
-}
+} // namespace roman

@@ -20,9 +20,10 @@ constexpr const char* COLOR_RESET = "\033[0m";
 class TestSuite;
 TestSuite* CurrentTestSuite();
 
-class TestSuite {
- public:
-  TestSuite(const std::string& name) ;
+class TestSuite
+{
+public:
+  TestSuite(const std::string& name);
   ~TestSuite();
 
   const std::string& name() const;
@@ -31,15 +32,14 @@ class TestSuite {
   bool failed() const;
   const std::vector<std::string>& failures() const;
 
- private:
+private:
   std::string name_;
   std::vector<std::string> failures_;
 };
 
 template<typename T, typename U>
-void ASSERT_EQ(
-    T expected, U actual,
-    const std::source_location location = std::source_location::current())
+void ASSERT_EQ(T expected, U actual,
+               const std::source_location location = std::source_location::current())
 {
   if (expected == actual)
   {
@@ -49,14 +49,13 @@ void ASSERT_EQ(
   {
     std::cout << COLOR_RED << "F" << COLOR_RESET << std::flush;
 
-    std::string source =
-        std::format("function {} : {}:{}:{}", location.function_name(),
-                    location.file_name(), location.line(), location.column());
+    std::string source = std::format("function {} : {}:{}:{}", location.function_name(),
+                                     location.file_name(), location.line(), location.column());
 
-    std::string message =
-        std::format("Expected \x1B[33m{}\033[0m to equal \x1B[33m{}\033[0m in {}.", actual, expected, source);
+    std::string message = std::format(
+        "Expected \x1B[33m{}\033[0m to equal \x1B[33m{}\033[0m in {}.", actual, expected, source);
     CurrentTestSuite()->record(message);
   }
 }
 
-} // namespace
+} // namespace roman

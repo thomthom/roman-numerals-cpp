@@ -3,6 +3,7 @@
 #include <format>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 #include <vector>
 
 namespace roman {
@@ -16,6 +17,7 @@ struct NumeralSet
   std::string subtract;
 };
 
+// clang-format off
 std::map<int, NumeralSet> g_numeral_sets{
     {7, {"", "", "M̅"}},
     {6, {"M̅", "D̅", "C̅"}},
@@ -25,11 +27,15 @@ std::map<int, NumeralSet> g_numeral_sets{
     {2, {"C", "L", "X"}},
     {1, {"X", "V", "I"}},
 };
+// clang-format on
 
-std::string repeat(const std::string& str, int n) {
+std::string repeat(const std::string& str, int n)
+{
   std::ostringstream os;
-  for(int i = 0; i < n; ++i)
+  for (int i = 0; i < n; ++i)
+  {
     os << str;
+  }
   return os.str();
 }
 

@@ -4,7 +4,8 @@
 
 namespace roman {
 
-struct Token {
+struct Token
+{
   std::string name;
   int value;
 };
