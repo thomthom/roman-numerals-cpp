@@ -110,15 +110,21 @@ std::string digit_to_roman(size_t position, int digit)
 
 std::string generate(int decimal)
 {
-  // TODO: Range check. (What is the range?)
-
   if (decimal == 0)
   {
     return "N";
   }
 
-  std::stringstream output;
+  // TODO: Range check negative numbers?
+
   const auto decimal_digits = digits(decimal);
+  if (decimal_digits.size() > g_numeral_sets.size())
+  {
+    throw std::out_of_range(
+        std::format("Can only manage decimal numbers up to {} digits", g_numeral_sets.size()));
+  }
+
+  std::stringstream output;
   for (size_t i = 0; i < decimal_digits.size(); ++i)
   {
     const auto digit = decimal_digits[i];
