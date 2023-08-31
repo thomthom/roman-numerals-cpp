@@ -5,11 +5,12 @@
 
 namespace {
 
-void ASSERT_ROUNDTRIP(const std::string& roman, int decimal)
+void ASSERT_ROUNDTRIP(const std::string& roman, int decimal,
+                      const std::source_location location = std::source_location::current())
 {
   using namespace roman;
-  ASSERT_EQ(RomanNumeral(roman).decimal(), decimal);
-  ASSERT_EQ(RomanNumeral(decimal).roman(), roman);
+  ASSERT_EQ(RomanNumeral(roman).decimal(), decimal, location);
+  ASSERT_EQ(RomanNumeral(decimal).roman(), roman, location);
 }
 
 } // namespace
