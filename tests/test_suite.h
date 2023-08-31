@@ -49,8 +49,9 @@ void ASSERT_EQ(T expected, U actual,
   {
     std::cout << COLOR_RED << "F" << COLOR_RESET << std::flush;
 
-    std::string source = std::format("function {} : {}:{}:{}", location.function_name(),
-                                     location.file_name(), location.line(), location.column());
+    std::string source = std::format("function \x1B[35m{}\033[0m : \x1B[36m{}:{}:{}\033[0m",
+                                     location.function_name(), location.file_name(),
+                                     location.line(), location.column());
 
     std::string message = std::format(
         "Expected \x1B[33m{}\033[0m to equal \x1B[33m{}\033[0m in {}.", actual, expected, source);
