@@ -3,6 +3,11 @@
 #include "roman.h"
 #include "roman_literals.h"
 
+#ifdef _WIN32
+  #define WIN32_LEAN_AND_MEAN
+  #include <Windows.h>
+#endif
+
 namespace {
 
 void ASSERT_ROUNDTRIP(const std::string& roman, int decimal,
@@ -17,6 +22,11 @@ void ASSERT_ROUNDTRIP(const std::string& roman, int decimal,
 
 int main(int argc, char* argv[])
 {
+#ifdef _WIN32
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+#endif
+
   using namespace roman;
   using namespace std::string_literals;
 
