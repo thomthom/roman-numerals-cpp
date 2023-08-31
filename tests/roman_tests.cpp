@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     // 9  9  9  9  9  9  9
     // M̅  C̅M̅ X̅C̅ I̅X̅ CM XC IX
     const RomanNumeral numeral(9'999'999);
-    ASSERT_EQ("MCMLXXXIII", numeral.roman());
+    ASSERT_EQ("M̅M̅M̅M̅M̅M̅M̅M̅M̅C̅M̅X̅C̅I̅X̅CMXCIX", numeral.roman());
     // ASSERT_EQ(1983, numeral.decimal());
 
     // TODO: Is max 4'999'999? (No representation for five million...)
