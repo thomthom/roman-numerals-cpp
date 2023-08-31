@@ -1,10 +1,8 @@
 #include "parser.h"
 
-#include <string>
-
 namespace roman {
 
-int parse(const std::vector<Token>& tokens)
+int parse(std::span<const Token> tokens)
 {
   int sum = 0;
   int previous_value = 0;

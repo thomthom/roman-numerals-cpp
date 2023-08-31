@@ -6,7 +6,7 @@
 
 namespace {
 
-int parse(const std::string& numeral)
+int parse(std::string_view numeral)
 {
   const auto tokens = roman::lex(numeral);
   return roman::parse(tokens);
@@ -21,8 +21,7 @@ std::string generate(int decimal)
 
 RomanNumeral::RomanNumeral() : decimal_(0) {}
 RomanNumeral::RomanNumeral(int decimal) : decimal_(decimal) {}
-RomanNumeral::RomanNumeral(const std::string& numeral) : decimal_(parse(numeral)), roman_(numeral)
-{}
+RomanNumeral::RomanNumeral(std::string_view numeral) : decimal_(parse(numeral)), roman_(numeral) {}
 
 std::string RomanNumeral::roman() const
 {

@@ -4,6 +4,7 @@
 #include <map>
 #include <sstream>
 #include <stdexcept>
+#include <string_view>
 #include <vector>
 
 namespace roman {
@@ -29,7 +30,7 @@ std::map<int, NumeralSet> g_numeral_sets{
 };
 // clang-format on
 
-std::string repeat(const std::string& str, int n)
+std::string repeat(std::string_view str, int n)
 {
   std::ostringstream os;
   for (int i = 0; i < n; ++i)

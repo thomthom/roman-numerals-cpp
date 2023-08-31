@@ -50,17 +50,16 @@ public:
 
 } // namespace
 
-std::vector<Token> lex(const std::string& input)
+std::vector<Token> lex(std::string_view input)
 {
   if (input.empty())
     return {};
 
   std::vector<Token> tokens;
   bool ascii_mega_modifier = false;
-  std::string_view input_view = input;
   for (size_t i = 0; i < input.size(); ++i)
   {
-    const auto chr = input_view.substr(i, 1);
+    const auto chr = input.substr(i, 1);
 
     // Account for ASCII modifier to the numerals.
     if (ascii_mega_modifier && MODIFIABLE_NUMERALS.find(chr) == std::string::npos)
@@ -76,7 +75,7 @@ std::vector<Token> lex(const std::string& input)
 
     // Account for possible Combining Overline diacritics.
     // https://en.wikipedia.org/wiki/Combining_character
-    if (input_view.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX)
+    if (input.substr(i, MEGA_MODIFIER_POSTFIX.size()) == MEGA_MODIFIER_POSTFIX)
     {
       ++i; // Because MEGA_MODIFIER_POSTFIX is byte size 2.
       continue;
@@ -85,10 +84,10 @@ std::vector<Token> lex(const std::string& input)
     std::string buffer(chr);
 
     // Look ahead to see if there's an overline, indicating multiplication by 1000.
-    const auto peek = input_view.substr(i + 1, MEGA_MODIFIER_POSTFIX.size());
+    const auto peek = input.substr(i + 1, MEGA_MODIFIER_POSTFIX.size());
     if (peek == MEGA_MODIFIER_POSTFIX)
     {
-      buffer = input_view.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
+      buffer = input.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
       if (ascii_mega_modifier)
         throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"); // TODO: Format

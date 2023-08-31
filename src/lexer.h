@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 #include <vector>
 
 #include "token.h"
 
 namespace roman {
 
-std::vector<Token> lex(const std::string& input);
+std::vector<Token> lex(std::string_view input);
 
 } // namespace roman

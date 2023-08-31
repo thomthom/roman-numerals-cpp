@@ -1,11 +1,12 @@
 #pragma once
 
+#include <span>
 #include <vector>
 
 #include "token.h"
 
 namespace roman {
 
-int parse(const std::vector<Token>& tokens);
+int parse(std::span<const Token> tokens);
 
 } // namespace roman

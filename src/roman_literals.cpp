@@ -11,5 +11,5 @@ RomanNumeral operator"" _roman(unsigned long long value)
 
 RomanNumeral operator"" _roman(const char* value, size_t size)
 {
-  return { std::string(value, size) };
+  return { std::string_view(value, size) };
 }
