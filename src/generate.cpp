@@ -1,5 +1,6 @@
 #include "generate.h"
 
+#include <cassert>
 #include <format>
 #include <map>
 #include <sstream>
@@ -30,7 +31,7 @@ std::map<int, NumeralSet> g_numeral_sets{
 };
 // clang-format on
 
-std::string repeat(std::string_view str, int n)
+std::string repeat(std::string_view str, const int n)
 {
   std::ostringstream os;
   for (int i = 0; i < n; ++i)
@@ -40,7 +41,7 @@ std::string repeat(std::string_view str, int n)
   return os.str();
 }
 
-void collect_digits(std::vector<int>& digits, int num)
+void collect_digits(std::vector<int>& digits, const int num)
 {
   if (num > 9)
   {
@@ -49,16 +50,24 @@ void collect_digits(std::vector<int>& digits, int num)
   digits.push_back(num % 10);
 }
 
-std::vector<int> digits(int decimal)
+std::vector<int> digits(const int decimal)
 {
   std::vector<int> result;
   collect_digits(result, decimal);
   return result;
 }
 
-std::string digit_to_roman(size_t position, int digit)
+std::string digit_to_roman(const size_t position, const int digit)
 {
+  assert(digit >= 0 && digit <= 9);
+
   auto numeral = g_numeral_sets.at(position);
+
+  // Edge case for the upper bound of the supported decimal.
+  if (position == g_numeral_sets.size())
+  {
+    return repeat(numeral.curr, digit);
+  }
 
   // https://en.wikipedia.org/wiki/Roman_numerals//Standard_form
 
@@ -109,14 +118,17 @@ std::string digit_to_roman(size_t position, int digit)
 
 } // namespace
 
-std::string generate(int decimal)
+std::string generate(const int decimal)
 {
   if (decimal == 0)
   {
     return "N";
   }
 
-  // TODO: Range check negative numbers?
+  if (decimal < 0)
+  {
+    throw std::out_of_range("Can only manage positive decimals");
+  }
 
   const auto decimal_digits = digits(decimal);
   if (decimal_digits.size() > g_numeral_sets.size())
