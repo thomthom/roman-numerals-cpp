@@ -1,5 +1,6 @@
 #include "lexer.h"
 
+#include <format>
 #include <map>
 #include <stdexcept>
 #include <string_view>
@@ -30,23 +31,23 @@ const std::map<std::string, Token> ROMAN_TOKENS = {
 
 // Prefix `_` before a numeral to multiply it by `1000`.
 // This is an ASCII alternative to the unicode notation.
-const std::string MEGA_MODIFIER_PREFIX = "_";
+constexpr std::string_view MEGA_MODIFIER_PREFIX = "_";
 
 // A Unicode postfix modifier multiplying the preceding
 // numeral by `1000`.
 // Note: This ends up as a single byte std::string, even with utf-8 flag.
-//     const std::string MEGA_MODIFIER_POSTFIX = "\u0305";
+//     constexpr std::string_view MEGA_MODIFIER_POSTFIX = "\u0305";
 // Workaround is to define the bytes directly:
 //     0xcc85 / 0xcc 0x85 (2 bytes)
-const std::string MEGA_MODIFIER_POSTFIX = "\xcc\x85";
+constexpr std::string_view MEGA_MODIFIER_POSTFIX = "\xcc\x85";
 
 // List of numerals that can be modified by the thousand modifiers.
-const std::string MODIFIABLE_NUMERALS = "MDCLXVI";
+constexpr std::string_view MODIFIABLE_NUMERALS = "MDCLXVI";
 
 class LexError : public std::domain_error
 {
 public:
-  LexError(const char* message) : std::domain_error(message){};
+  LexError(std::string_view message) : std::domain_error(message.data()){};
 };
 
 } // namespace
@@ -65,7 +66,7 @@ std::vector<Token> lex(std::string_view input)
     // Account for ASCII modifier to the numerals.
     if (ascii_mega_modifier && MODIFIABLE_NUMERALS.find(chr) == std::string::npos)
     {
-      throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{c}"); // TODO: Format
+      throw LexError(std::format("unexpected char after MEGA_MODIFIER_PREFIX: {}", chr));
     }
 
     if (chr == MEGA_MODIFIER_PREFIX)
@@ -91,16 +92,16 @@ std::vector<Token> lex(std::string_view input)
       buffer = input.substr(i, 1 + MEGA_MODIFIER_POSTFIX.size());
       // Can't combine ASCII notation and Unicode chars.
       if (ascii_mega_modifier)
-        throw LexError("unexpected char after MEGA_MODIFIER_PREFIX: #{chr}"); // TODO: Format
+        throw LexError(std::format("unexpected char after MEGA_MODIFIER_PREFIX: {}", chr));
     }
 
     // Convert the ASCII notation to Unicode notation.
     if (ascii_mega_modifier)
-      buffer = std::string(chr) + MEGA_MODIFIER_POSTFIX;
+      buffer = std::string(chr) + MEGA_MODIFIER_POSTFIX.data();
 
     const auto it = ROMAN_TOKENS.find(buffer);
     if (it == ROMAN_TOKENS.end())
-      throw LexError("invalid numeral: #{buffer}"); // TODO: Format
+      throw LexError(std::format("invalid numeral: {}", buffer));
 
     // Reset the MEGA state now that we have the full char.
     ascii_mega_modifier = false;
