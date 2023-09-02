@@ -34,9 +34,10 @@ const std::string MEGA_MODIFIER_PREFIX = "_";
 
 // A Unicode postfix modifier multiplying the preceding
 // numeral by `1000`.
-// TODO: This ends up as a single byte std::string, even with utf-8 flag.
-// const std::string MEGA_MODIFIER_POSTFIX = "\u0305";
-// 	0xcc85 / 0xcc 0x85 (2 bytes)
+// Note: This ends up as a single byte std::string, even with utf-8 flag.
+//     const std::string MEGA_MODIFIER_POSTFIX = "\u0305";
+// Workaround is to define the bytes directly:
+//     0xcc85 / 0xcc 0x85 (2 bytes)
 const std::string MEGA_MODIFIER_POSTFIX = "\xcc\x85";
 
 // List of numerals that can be modified by the thousand modifiers.
