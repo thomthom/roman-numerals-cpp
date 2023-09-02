@@ -20,7 +20,7 @@ struct NumeralSet
 };
 
 // clang-format off
-std::map<int, NumeralSet> g_numeral_sets{
+const std::map<int, NumeralSet> g_numeral_sets{
     {7, {"", "", "M̅"}},
     {6, {"M̅", "D̅", "C̅"}},
     {5, {"C̅", "L̅", "X̅"}},
